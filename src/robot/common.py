@@ -13,7 +13,8 @@ class RosPublisher(object):
         self.name = name
         self._setup()
 
-    def setup_publisher(self, ros):
+    def setup_publisher(self, ros, robot):
+        self.robot = robot
         self.publisher = ros.Publisher(self.name, self.msg, queue_size=1)
 
 class RosSubscriber(object):
@@ -21,7 +22,8 @@ class RosSubscriber(object):
         self.name = name
         self._setup()
 
-    def setup_subscriber(self, ros, rsp_server):
+    def setup_subscriber(self, ros, robot, rsp_server):
+        self.robot = robot
         self.subscriber = ros.Subscriber(self.name, self.msg, self.callback)
         self.rsp_server = rsp_server
 

@@ -9,12 +9,12 @@ class CmdVelPublisher(RosPublisher):
 
     def make_twist_value(self):
         r = Twist()
-        r.linear.x = float_from_string(variables[u"lx"])
-        r.linear.y = float_from_string(variables[u"ly"])
-        r.linear.z = float_from_string(variables[u"lz"])
-        r.angular.x = float_from_string(variables[u"ax"])
-        r.angular.y = float_from_string(variables[u"ay"])
-        r.angular.z = float_from_string(variables[u"az"])
+        r.linear.x = float_from_string(self.robot.variables[u"lx"])
+        r.linear.y = float_from_string(self.robot.variables[u"ly"])
+        r.linear.z = float_from_string(self.robot.variables[u"lz"])
+        r.angular.x = float_from_string(self.robot.variables[u"ax"])
+        r.angular.y = float_from_string(self.robot.variables[u"ay"])
+        r.angular.z = float_from_string(self.robot.variables[u"az"])
         return r
 
     def publish(self):
@@ -40,8 +40,10 @@ class CliffSubscriber(RosSubscriber):
         v2 = msg.bottom
         return {n1: v1, n2: v2}
 
-pub_topics = {u"cmd_vel": CmdVelPublisher("cmd_vel")}
-variables = {u"lx": "0", u"ly": "0", u"lz": "0",
-             u"ax": "0", u"ay": "0", u"az": "0"}
-sub_topics = {u"bumper": BumperSubscriber("bumper"),
-              u"cliff": CliffSubscriber("cliff")}
+class TurtleBot(object):
+    def __init__(self):
+        self.pub_topics = {u"cmd_vel": CmdVelPublisher("cmd_vel")}
+        self.variables = {u"lx": "0", u"ly": "0", u"lz": "0",
+                          u"ax": "0", u"ay": "0", u"az": "0"}
+        self.sub_topics = {u"bumper": BumperSubscriber("bumper"),
+                           u"cliff": CliffSubscriber("cliff")}

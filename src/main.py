@@ -2,6 +2,7 @@
 import rospy
 from rsp_server.rsserver import RemoteSensorServer
 from geometry_msgs.msg import Twist
+from kobuki_msgs.msg import BumperEvent, CliffEvent
 
 def float_from_string(str):
     try:
@@ -16,7 +17,7 @@ class RosPublisher(object):
         self._setup()
 
     def setup_publisher(self, ros):
-        self.publisher = ros.Publisher(self. name, self.msg, queue_size=1)
+        self.publisher = ros.Publisher(self.name, self.msg, queue_size=1)
 
 class CmdVelPublisher(RosPublisher):
     def _setup(self):
@@ -35,20 +36,60 @@ class CmdVelPublisher(RosPublisher):
     def publish(self):
         self.publisher.publish(self.make_twist_value())
 
+class RosSubscriber(object):
+    def __init__(self, name):
+        self.name = name
+        self._setup()
+
+    def setup_subscriber(self, ros, rsp_server):
+        self.subscriber = ros.Subscriber(self.name, self.msg, self.callback)
+        self.rsp_server = rsp_server
+
+    def callback(self, msg):
+        dic = self._make_dic(msg)
+        self.rsp_server.sensor_update(dic)
+        self.rsp_server.broadcast(self.name)
+
+    def _make_dic(self, msg):
+        return {}
+
+class BumperSubscriber(RosSubscriber):
+    def _setup(self):
+        self.msg = BumperEvent
+
+    def _make_dic(self, msg):
+        n = "bumper"+str(msg.bumper)
+        v = msg.state
+        return {n: v}
+
+class CliffSubscriber(RosSubscriber):
+    def _setup(self):
+        self.msg = CliffEvent
+
+    def _make_dic(self, msg):
+        n1 = "cliff"+str(msg.sensor)
+        v1 = msg.state
+        n2 = "bottom"
+        v2 = msg.bottom
+        return {n1: v1, n2: v2}
+
 pub_topics = {u"cmd_vel": CmdVelPublisher("cmd_vel")}
 variables = {u"lx": "0", u"ly": "0", u"lz": "0",
              u"ax": "0", u"ay": "0", u"az": "0"}
+
+sub_topics = {u"bumper": BumperSubscriber("bumper"),
+              u"cliff": CliffSubscriber("cliff")}
 
 class RosRspServer(object):
     def __init__(self, server=None):
         if server is not None:
             server.set_controller(self)
         self.setup_publishers()
+        self.setup_subscribers()
         server.start()
 
     def setup_publishers(self):
         global pub_topics
-        self.publishers = {}
         for topic in pub_topics:
             pub = pub_topics[topic]
             pub.setup_publisher(rospy)
@@ -69,12 +110,15 @@ class RosRspServer(object):
         else:
             rospy.logwarn("unknown topic: %s" % str)
 
+    def setup_subscribers(self):
+        global sub_topics
+        for topic in sub_topics:
+            sub = sub_topics[topic]
+            sub.setup_subscriber(rospy, server)
+
 if __name__ == '__main__':
+    rospy.init_node('ros_rsp_server', anonymous=True)
     server = RemoteSensorServer()
     rrs = RosRspServer(server=server)
-    rospy.init_node('ros_rsp_server')
     rospy.spin()
-#    rate = rospy.Rate(10)
-#    while not rospy.is_shutdown():
-#        rate.sleep()
     server.stop()

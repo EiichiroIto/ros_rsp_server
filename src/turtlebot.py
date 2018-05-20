@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# author: Eiichiro Ito
+# e-mail: e-itoh@ygu.ac.jp
+# created: 2018/5/20
+# License: MIT License
 import rospy
 from ros_rsp_server import RosRspServer
 from rsp_server.rsserver import RemoteSensorServer

@@ -1,4 +1,8 @@
 #!/usr/bin/env python
+# author: Eiichiro Ito
+# e-mail: e-itoh@ygu.ac.jp
+# created: 2018/5/20
+# License: MIT License
 import rospy
 
 class RosRspServer(object):
@@ -10,16 +14,16 @@ class RosRspServer(object):
         self.robot = robot
         self.server = server
         self.server.set_controller(self)
-        self.setup_publishers()
-        self.setup_subscribers()
+        self._setup_publishers()
+        self._setup_subscribers()
         self.server.start()
 
-    def setup_publishers(self):
+    def _setup_publishers(self):
         for topic in self.robot.pub_topics:
             pub = self.robot.pub_topics[topic]
             pub.setup_publisher(rospy, self.robot)
 
-    def setup_subscribers(self):
+    def _setup_subscribers(self):
         for topic in self.robot.sub_topics:
             sub = self.robot.sub_topics[topic]
             sub.setup_subscriber(rospy, self.robot, self.server)

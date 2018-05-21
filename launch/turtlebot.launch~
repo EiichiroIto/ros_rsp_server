@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="ros_rsp_server" name="turtlebot" type="turtlebot.py">
+	      <remap from="cmd_vel" to="cmd_vel_mux/input/teleop" />
+	      <remap from="bumper" to="mobile_base/events/bumper" />
+	      <remap from="cliff" to="mobile_base/events/cliff" />
+	</node>
+</launch>

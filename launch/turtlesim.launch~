@@ -1,7 +1,0 @@
-<launch>
-	<node pkg="ros_rsp_server" name="ros_rsp_server" type="turtlebot.py">
-	      <remap from="cmd_vel" to="turtle1/cmd_vel" />
-	</node>
-	<node pkg="turtlesim" name="turtlesim" type="turtlesim_node">
-	</node>
-</launch>

@@ -19,7 +19,7 @@ last_r = 0
 last_no = NOTHING
 
 rospy.init_node('create_kobuki')
-pub = rospy.Publisher('bumper', BumperEvent, queue_size=1)
+pub = rospy.Publisher('bumper', BumperEvent, queue_size=10)
 
 def bumper_no(left, right):
     if (left != 0) and (right == 0):

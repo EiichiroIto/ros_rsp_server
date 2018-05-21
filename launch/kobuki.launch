@@ -1,0 +1,7 @@
+<launch>
+	<node pkg="ros_rsp_server" name="kobuki" type="turtlebot.py" output="screen">
+	      <remap from="cmd_vel" to="mobile_base/commands/velocity" />
+	      <remap from="bumper" to="mobile_base/events/bumper" />
+	      <remap from="cliff" to="mobile_base/events/cliff" />
+	</node>
+</launch>

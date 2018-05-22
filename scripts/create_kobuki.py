@@ -50,5 +50,5 @@ def callback(msg):
         last_no = bumper_no(left, right)
         publish_bumper(last_no, 1)
 
-sub = rospy.Subscriber('/turtlebot/sensor_state', TurtlebotSensorState, callback)
+sub = rospy.Subscriber('/create_node/sensor_state', TurtlebotSensorState, callback)
 rospy.spin()

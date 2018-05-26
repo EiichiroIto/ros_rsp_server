@@ -1,8 +1,10 @@
 <launch>
 	<node pkg="ros_rsp_server" name="ros_rsp_server" type="turtlebot.py" output="screen">
 	      <remap from="cmd_vel" to="turtle1/cmd_vel" />
-	      <param name="joy" type="int" value="0" />
+	      <param name="joy" type="int" value="1" />
 	</node>
 	<node pkg="turtlesim" name="turtlesim" type="turtlesim_node">
+	</node>
+	<node pkg="joy" name="joy" type="joy_node">
 	</node>
 </launch>

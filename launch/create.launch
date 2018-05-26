@@ -1,5 +1,6 @@
 <launch>
 	<node pkg="ros_rsp_server" name="create" type="turtlebot.py" output="screen">
+	      <param name="joy" type="int" value="0" />
 	</node>
 	<node pkg="ros_rsp_server" name="create_kobuki" type="create_kobuki.py" output="screen">
 	</node>

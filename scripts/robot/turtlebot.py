@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from common import float_from_string, RosPublisher, RosSubscriber
+from common import float_from_string, RosRobot, RosPublisher, RosSubscriber
 from geometry_msgs.msg import Twist
 from kobuki_msgs.msg import BumperEvent, CliffEvent
 
@@ -40,10 +40,15 @@ class CliffSubscriber(RosSubscriber):
         v2 = msg.bottom
         return {n1: v1, n2: v2}
 
-class TurtleBot(object):
+class TurtleBot(RosRobot):
     def __init__(self):
-        self.pub_topics = {u"cmd_vel": CmdVelPublisher("cmd_vel")}
-        self.variables = {u"lx": "0", u"ly": "0", u"lz": "0",
-                          u"ax": "0", u"ay": "0", u"az": "0"}
-        self.sub_topics = {u"bumper": BumperSubscriber("bumper"),
-                           u"cliff": CliffSubscriber("cliff")}
+        super(TurtleBot, self).__init__()
+        self.add_publisher(u"cmd_vel", CmdVelPublisher("cmd_vel"))
+        self.add_variable(u"lx", "0")
+        self.add_variable(u"ly", "0")
+        self.add_variable(u"lz", "0")
+        self.add_variable(u"ax", "0")
+        self.add_variable(u"ay", "0")
+        self.add_variable(u"az", "0")
+        self.add_subscriber(u"bumper", BumperSubscriber("bumper"))
+        self.add_subscriber(u"cliff", CliffSubscriber("cliff"))

@@ -8,6 +8,21 @@ def float_from_string(str):
         r = 0.0
     return r
 
+class RosRobot(object):
+    def __init__(self):
+        self.pub_topics = {}
+        self.variables = {}
+        self.sub_topics = {}
+
+    def add_publisher(self, name, obj):
+        self.pub_topics[name] = obj
+
+    def add_subscriber(self, name, obj):
+        self.sub_topics[name] = obj
+
+    def add_variable(self, name, val):
+        self.variables[name] = val
+
 class RosPublisher(object):
     def __init__(self, name):
         self.name = name

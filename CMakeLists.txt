@@ -12,6 +12,7 @@ find_package(catkin REQUIRED COMPONENTS
   rospy
   sensor_msgs
   kobuki_msgs
+  create_node
 )
 
 ## System dependencies are found with CMake's conventions

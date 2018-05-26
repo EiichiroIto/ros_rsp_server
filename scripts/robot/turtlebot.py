@@ -43,12 +43,12 @@ class CliffSubscriber(RosSubscriber):
 class TurtleBot(RosRobot):
     def __init__(self):
         super(TurtleBot, self).__init__()
-        self.add_publisher(u"cmd_vel", CmdVelPublisher("cmd_vel"))
+        self.add_publisher(CmdVelPublisher(u"cmd_vel"))
         self.add_variable(u"lx", "0")
         self.add_variable(u"ly", "0")
         self.add_variable(u"lz", "0")
         self.add_variable(u"ax", "0")
         self.add_variable(u"ay", "0")
         self.add_variable(u"az", "0")
-        self.add_subscriber(u"bumper", BumperSubscriber("bumper"))
-        self.add_subscriber(u"cliff", CliffSubscriber("cliff"))
+        self.add_subscriber(BumperSubscriber(u"bumper"))
+        self.add_subscriber(CliffSubscriber(u"cliff"))

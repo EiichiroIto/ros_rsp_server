@@ -14,11 +14,11 @@ class RosRobot(object):
         self.variables = {}
         self.sub_topics = {}
 
-    def add_publisher(self, name, obj):
-        self.pub_topics[name] = obj
+    def add_publisher(self, obj):
+        self.pub_topics[obj.name] = obj
 
-    def add_subscriber(self, name, obj):
-        self.sub_topics[name] = obj
+    def add_subscriber(self, obj):
+        self.sub_topics[obj.name] = obj
 
     def add_variable(self, name, val):
         self.variables[name] = val
@@ -30,7 +30,7 @@ class RosPublisher(object):
 
     def setup_publisher(self, ros, robot):
         self.robot = robot
-        self.publisher = ros.Publisher(self.name, self.msg, queue_size=1)
+        self.publisher = ros.Publisher(self.name.encode('utf-8'), self.msg, queue_size=1)
 
 class RosSubscriber(object):
     def __init__(self, name):
@@ -39,7 +39,7 @@ class RosSubscriber(object):
 
     def setup_subscriber(self, ros, robot, rsp_server):
         self.robot = robot
-        self.subscriber = ros.Subscriber(self.name, self.msg, self.callback)
+        self.subscriber = ros.Subscriber(self.name.encode('utf-8'), self.msg, self.callback)
         self.rsp_server = rsp_server
 
     def callback(self, msg):

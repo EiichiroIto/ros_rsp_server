@@ -44,8 +44,8 @@ class RosSubscriber(object):
 
     def callback(self, msg):
         dic = self._make_dic(msg)
-        self.rsp_server.sensor_update(dic)
-        self.rsp_server.broadcast(self.name)
+        self.rsp_server.send_sensor_update(dic)
+        self.rsp_server.send_broadcast(self.name)
 
     def _make_dic(self, msg):
         return {}
